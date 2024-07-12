@@ -10,7 +10,8 @@ import net.devh.boot.grpc.server.service.GrpcService;
 public class HelloService extends HelloServiceGrpc.HelloServiceImplBase {
     @Override
     public void hello(HelloRequest request, StreamObserver<HelloResponse> responseObserver) {
-        new Thread(new MyThread()).start();
+        new Thread(() -> ExampleSocket.broadcastMessage("Hello from gRPC service: " + request.getName())).start();
+
         HelloResponse reply = HelloResponse.newBuilder()
                 .setGreeting("Hello ==> " + request.getName())
                 .build();
